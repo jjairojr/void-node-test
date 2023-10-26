@@ -19,14 +19,22 @@ describe('PlayerController', () => {
   });
 
   it('should call the PlayerService with the correct parameters', async () => {
-    const region = 'br1';
-    const name = 'brtt';
+    const result = await controller.getPlayerSummary('BR1', 'cachocoudet', 420);
 
-    const result = await controller.findByRegionAndName(region, name);
-
-    expect(result).toEqual({
-      name: 'brTT',
-      image: `http://ddragon.leagueoflegends.com/cdn/11.6.1/img/profileicon/28.png`,
-    });
+    expect(result).toEqual([
+      {
+        KDA: 1,
+        avgCSPerMinute: 7.779578606158833,
+        avgVisionScore: 1.2,
+        leaguePoints: 147,
+        losses: 173,
+        queueType: 'RANKED_SOLO_5x5',
+        rank: {
+          image: 'http://localhost:3000/lol/tier/master/image',
+          name: 'MASTER',
+        },
+        wins: 187,
+      },
+    ]);
   });
 });

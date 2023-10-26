@@ -86,7 +86,7 @@ export class PlayerService {
         })
       : playersInfo;
 
-    if (!playerFilteredByQueueType) {
+    if (!playerFilteredByQueueType.length) {
       throw new HttpException(
         'These player do not have games in this queueType',
         404,
@@ -164,8 +164,6 @@ export class PlayerService {
         }
 
         const csPerMinute = summonerMatchInfo.totalMinionsKilled / totalMinutes;
-
-        console.log(summonerMatchInfo.challenges);
 
         queueIdStatistics[queueId].totalKills += summonerMatchInfo.kills;
         queueIdStatistics[queueId].totalDeaths += summonerMatchInfo.deaths;

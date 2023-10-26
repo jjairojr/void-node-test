@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { LOLQueueId, LOLRegion } from './types';
 
@@ -12,7 +12,6 @@ export class PlayerController {
     @Param('summonerName') summonerName: string,
     @Query('queueId') queueId: LOLQueueId,
   ) {
-    // todo image
     return this.playerService.getPlayerSummary({
       region,
       summonerName,

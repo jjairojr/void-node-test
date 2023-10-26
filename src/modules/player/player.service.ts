@@ -10,9 +10,7 @@ import {
   summonerSpellIdToSummonerNameMap,
 } from '../../services/riot-service/constants';
 
-import * as fs from 'fs';
-
-import * as path from 'path';
+import { env } from 'src/env';
 
 @Injectable()
 export class PlayerService {
@@ -94,13 +92,12 @@ export class PlayerService {
         404,
       );
     }
-    const playerDataPromises = playerFilteredByQueueType.map(async (player) => {
-      const tierRankImage = await this.getTierRankImage(player.tier);
 
+    return playerFilteredByQueueType.map((player) => {
       return {
         rank: {
           name: player.tier,
-          image: tierRankImage,
+          image: env.APP_URL + `/lol/tier/${player.tier.toLowerCase()}/image`,
         },
         queueType: player.queueType,
         leaguePoints: player.leaguePoints,
@@ -115,9 +112,6 @@ export class PlayerService {
             ?.avgCSPerMinute,
       };
     });
-
-    const playerData = await Promise.all(playerDataPromises);
-    return playerData;
   }
 
   private async getMatchesPlayerDetails({
@@ -171,12 +165,14 @@ export class PlayerService {
 
         const csPerMinute = summonerMatchInfo.totalMinionsKilled / totalMinutes;
 
+        console.log(summonerMatchInfo.challenges);
+
         queueIdStatistics[queueId].totalKills += summonerMatchInfo.kills;
         queueIdStatistics[queueId].totalDeaths += summonerMatchInfo.deaths;
         queueIdStatistics[queueId].totalAssists += summonerMatchInfo.assists;
         queueIdStatistics[queueId].totalCSPerMinute += csPerMinute;
         queueIdStatistics[queueId].totalVisionScore +=
-          summonerMatchInfo.challenges.visionScorePerMinute;
+          summonerMatchInfo.challenges?.visionScorePerMinute;
         queueIdStatistics[queueId].matchCount++;
 
         return {
@@ -219,18 +215,5 @@ export class PlayerService {
       averagesByQueueId,
       matchesDetails,
     };
-  }
-
-  private async getTierRankImage(tier: string) {
-    const imgPath = path.join(
-      process.cwd(),
-      `src/assets/lol/tiers/${tier}.png`,
-    );
-
-    if (!fs.existsSync(imgPath)) return null;
-
-    const imageBuffer = fs.readFileSync(imgPath);
-
-    return imageBuffer.toString('base64');
   }
 }

@@ -10,7 +10,7 @@ import {
   summonerSpellIdToSummonerNameMap,
 } from '../../services/riot-service/constants';
 
-import { env } from 'src/env';
+import { env } from '../../env';
 
 @Injectable()
 export class PlayerService {

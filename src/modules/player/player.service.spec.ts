@@ -17,10 +17,11 @@ describe('PlayerService', () => {
   });
 
   it('should call the Riot service with the correct parameters', async () => {
-    const region = 'br1';
-    const name = 'brtt';
-
-    const result = await playerService.findByRegionAndName({ region, name });
+    const result = await playerService.getPlayerSummary({
+      region: 'BR1',
+      summonerName: 'cachocoudet',
+      queueId: 450,
+    });
 
     expect(result).toEqual({
       name: 'brTT',

@@ -34,6 +34,8 @@ export enum LOLQueueIdEnum {
   ALL = 'ALL',
 }
 
+export type LOLQueueName = keyof typeof LOLQueueIdEnum;
+
 export type LOLRegion = keyof typeof LOLRegionEnum;
 
 export type LOLContinentRegion = keyof typeof LOLContinentRegionEnum;

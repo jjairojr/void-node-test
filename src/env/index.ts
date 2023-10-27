@@ -15,10 +15,14 @@ const envSchema = z.object({
 
 const _env = envSchema.safeParse(process.env);
 
+console.log(_env);
+
 if (!_env.success) {
   console.error('❌ Invalid enviroment variable');
 
   throw new Error('Invalid enviroment variable');
 }
+
+console.log(_env.data);
 
 export const env = _env.data;

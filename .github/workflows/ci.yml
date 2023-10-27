@@ -38,7 +38,7 @@ jobs:
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
 
     - name: Build docker image
-      run: docker build -t jjairojr/void .
+      run: docker build  -t jjairojr/void .
 
     - name: Publish image to docker hub
       run: docker push jjairojr/void
@@ -53,4 +53,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f void-app
       - name: Run docker container
-        run: docker run -d -p 3000:3000 --name void-app jjairojr/void
+        run: docker run -d -p 3000:3000 -e DB_HOST=${{secrets.DB_HOST}} -e DB_PASS=${{secrets.DB_PASS}} -e DB_PORT=${{secrets.DB_PORT}} -e DB_USER=${{secrets.DB_USER}} -e DB_NAME=${{secrets.DB_NAME}} --name void-app jjairojr/void

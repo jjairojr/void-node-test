@@ -43,6 +43,10 @@ jest.mock('../../src/services/riot-service', () => {
               queueId: 420,
               participants: [
                 {
+                  championName: 'Ahri',
+                  summoner1Id: 4,
+                  summoner2Id: 14,
+
                   puuid:
                     'XjwBfnpRoWRIUAIAjMbE5cH8hzTseE_gtzhwAhIiFxmhf62xSX2-UBOTZkpQ1un6fbpEjll3gfiUQg',
                   assists: 1,

@@ -4,10 +4,12 @@ import { LOLQueueId } from './types';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { PlayerEntity } from './entities/player.entity';
 import { Repository } from 'typeorm';
+import { QueueEntity } from '../queue/queue.entity';
 
 describe('PlayerService', () => {
   let playerService: PlayerService;
   let playerRepository: Repository<PlayerEntity>;
+  let queueRepository: Repository<QueueEntity>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -15,6 +17,13 @@ describe('PlayerService', () => {
         PlayerService,
         {
           provide: getRepositoryToken(PlayerEntity),
+          useValue: {
+            findOne: jest.fn(),
+            save: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(QueueEntity),
           useValue: {},
         },
       ],
@@ -24,14 +33,18 @@ describe('PlayerService', () => {
     playerRepository = module.get<Repository<PlayerEntity>>(
       getRepositoryToken(PlayerEntity),
     );
+    queueRepository = module.get<Repository<QueueEntity>>(
+      getRepositoryToken(QueueEntity),
+    );
   });
 
   it('should be defined', () => {
     expect(playerService).toBeDefined();
     expect(playerRepository).toBeDefined();
+    expect(queueRepository).toBeDefined();
   });
 
-  it('should call the Riot service with the correct parameters', async () => {
+  it('should be able to get player summary', async () => {
     const result = await playerService.getPlayerSummary({
       region: 'BR1',
       summonerName: 'cachocoudet',
@@ -41,6 +54,9 @@ describe('PlayerService', () => {
     expect(result).toEqual([
       {
         KDA: 1,
+        region: 'BR1',
+        summonerName: 'CACHOCOUDET',
+        accountId: 'vB2nsAKqpKjLu7Y8Y0zhinr2SbpWKjJo6Xw1sSD-ztM',
         avgCSPerMinute: 7.779578606158833,
         avgVisionScore: 1.2,
         leaguePoints: 147,
@@ -55,7 +71,7 @@ describe('PlayerService', () => {
     ]);
   });
 
-  it('should call the Riot service with the correct parameters but with dont existed queueId', async () => {
+  it('should NOT be able to get player summary with wrong queueId', async () => {
     try {
       await playerService.getPlayerSummary({
         region: 'BR1',
@@ -69,5 +85,38 @@ describe('PlayerService', () => {
         'These player do not have games in this queueType',
       );
     }
+  });
+
+  it('should be able to get player recent matches ', async () => {
+    const result = await playerService.getPlayerRecentMatches({
+      region: 'BR1',
+      summonerName: 'cachocoudet',
+      queueId: 420,
+      page: 1,
+      limit: 10,
+    });
+
+    expect(result).toEqual([
+      {
+        summoners: ['Flash', 'Ignite'],
+        gameDuration: 1234,
+        champion: 'Ahri',
+        kills: 2,
+        csPerMinute: 7.779578606158833,
+        deaths: 3,
+        assists: 1,
+        KDA: 1,
+      },
+      {
+        summoners: ['Flash', 'Ignite'],
+        gameDuration: 1234,
+        champion: 'Ahri',
+        kills: 2,
+        csPerMinute: 7.779578606158833,
+        deaths: 3,
+        assists: 1,
+        KDA: 1,
+      },
+    ]);
   });
 });

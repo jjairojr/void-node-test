@@ -9,7 +9,7 @@ import { CacheModule } from '@nestjs/cache-manager';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '51.20.64.125',
+      host: env.DB_HOST,
       port: Number(env.DB_PORT),
       username: env.DB_USER,
       password: env.DB_PASS,

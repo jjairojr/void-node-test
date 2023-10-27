@@ -3,6 +3,7 @@ import { LolController } from './lol.controller';
 import { LolService } from './lol.service';
 import { QueueEntity } from '../queue/entities/queue.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 describe('LolController', () => {
   let lolController: LolController;
@@ -11,6 +12,10 @@ describe('LolController', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         LolService,
+        {
+          provide: CACHE_MANAGER,
+          useValue: {},
+        },
         {
           provide: getRepositoryToken(QueueEntity),
           useValue: {

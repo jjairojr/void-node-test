@@ -3,6 +3,7 @@ import { PlayerModule } from './modules/player/player.module';
 import { LolModule } from './modules/lol/lol.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { env } from './env';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -18,6 +19,9 @@ import { env } from './env';
     }),
     PlayerModule,
     LolModule,
+    CacheModule.register({
+      isGlobal: true,
+    }),
   ],
   controllers: [],
   providers: [],

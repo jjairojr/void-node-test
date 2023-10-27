@@ -1,11 +1,11 @@
 import {
   LOLContinentRegion,
-  LOLRegion,
-  LOLRegionEnum,
   LOLContinentRegionEnum,
   LOLQueueIdEnum,
+  LOLRegion,
+  LOLRegionEnum,
   SummonerSpellName,
-} from '../../modules/player/types';
+} from '../../modules/lol/interfaces';
 
 export const regionToContinentRegionMap: Record<LOLRegion, LOLContinentRegion> =
   {

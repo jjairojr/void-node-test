@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { RiotService } from '../../services/riot-service';
-import { LOLRegion, TFormattedPlayer } from './types';
+import { TFormattedPlayer } from './types';
 import { GetMatchesByPlayerIdResponse } from '../../services/riot-service/types';
 import { GetPlayerSummaryDTO } from './dto/get-player-summary.dto';
 import { GetPlayerRecentMatchesDTO } from './dto/get-player-recent-matches.dto';
@@ -15,6 +15,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PlayerEntity } from './entities/player.entity';
 import { Repository } from 'typeorm';
 import { QueueEntity } from '../queue/entities/queue.entity';
+import { LOLRegion } from '../lol/interfaces';
 
 @Injectable()
 export class PlayerService {

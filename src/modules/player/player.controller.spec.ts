@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PlayerController } from './player.controller';
 import { PlayerService } from './player.service';
-import { LOLQueueId } from './types';
 import { PlayerEntity } from './entities/player.entity';
-import { QueueEntity } from '../queue/queue.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { LOLQueueId } from '../lol/interfaces';
+import { QueueEntity } from '../queue/entities/queue.entity';
 
 describe('PlayerController', () => {
   let controller: PlayerController;

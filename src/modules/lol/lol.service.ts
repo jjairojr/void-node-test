@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QueueEntity } from '../queue/entities/queue.entity';
-import { LOLRegion } from '../player/types';
+import { LOLRegion } from './interfaces';
 
 @Injectable()
 export class LolService {

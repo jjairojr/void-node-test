@@ -1,4 +1,5 @@
-import { LOLQueueName } from 'src/modules/player/types';
+import { LOLQueueName } from '../../lol/interfaces';
+
 import {
   Entity,
   PrimaryGeneratedColumn,

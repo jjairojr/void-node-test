@@ -1,4 +1,4 @@
-import { LOLRegion } from '../../player/types';
+import { LOLRegion } from '../interfaces';
 
 export type GetLeaderBoardBySummonerNameDTO = {
   summonerName: string;

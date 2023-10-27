@@ -1,4 +1,8 @@
-import { LOLQueueId, LOLQueueName, LOLRegion } from 'src/modules/player/types';
+import {
+  LOLQueueId,
+  LOLQueueName,
+  LOLRegion,
+} from '../../modules/lol/interfaces';
 
 export type GetPlayerResponse = {
   id: string;

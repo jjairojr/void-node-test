@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { LOLRegion } from '../types';
 import { QueueEntity } from '../../queue/entities/queue.entity';
+import { LOLRegion } from 'src/modules/lol/interfaces';
 
 @Entity({ name: 'players' })
 export class PlayerEntity {

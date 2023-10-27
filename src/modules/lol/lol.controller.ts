@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Res } from '@nestjs/common';
 import { LolService } from './lol.service';
 import * as path from 'path';
-import { LOLRegion } from '../player/types';
+import { LOLRegion } from './interfaces';
 
 @Controller('lol')
 export class LolController {

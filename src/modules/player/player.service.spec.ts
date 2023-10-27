@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PlayerService } from './player.service';
-import { LOLQueueId } from './types';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { PlayerEntity } from './entities/player.entity';
 import { Repository } from 'typeorm';
-import { QueueEntity } from '../queue/queue.entity';
+import { LOLQueueId } from '../lol/interfaces';
+import { QueueEntity } from '../queue/entities/queue.entity';
 
 describe('PlayerService', () => {
   let playerService: PlayerService;

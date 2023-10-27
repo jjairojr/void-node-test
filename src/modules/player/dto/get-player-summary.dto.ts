@@ -1,4 +1,4 @@
-import { LOLQueueId, LOLRegion } from '../types';
+import { LOLQueueId, LOLRegion } from '../../lol/interfaces';
 
 export type GetPlayerSummaryDTO = {
   region: LOLRegion;

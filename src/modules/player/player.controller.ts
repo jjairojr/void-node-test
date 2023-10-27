@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { PlayerService } from './player.service';
-import { LOLQueueId, LOLRegion } from './types';
+import { LOLQueueId, LOLRegion } from '../lol/interfaces';
 
 @Controller('player')
 export class PlayerController {

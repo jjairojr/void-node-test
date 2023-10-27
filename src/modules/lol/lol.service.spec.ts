@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LolService } from './lol.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { QueueEntity } from '../queue/queue.entity';
+import { Repository } from 'typeorm';
+import { QueueEntity } from '../queue/entities/queue.entity';
 
 describe('LolService', () => {
   let lolService: LolService;
+  let queueRepository: Repository<QueueEntity>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -40,10 +42,14 @@ describe('LolService', () => {
     }).compile();
 
     lolService = module.get<LolService>(LolService);
+    queueRepository = module.get<Repository<QueueEntity>>(
+      getRepositoryToken(QueueEntity),
+    );
   });
 
   it('should be defined', () => {
     expect(lolService).toBeDefined();
+    expect(queueRepository).toBeDefined();
   });
 
   it('should be able to get the region leaderboard', async () => {

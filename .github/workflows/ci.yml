@@ -6,6 +6,14 @@ on: [push, pull_request]
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      DB_HOST: ${{secrets.DB_HOST}}
+      DB_PASS: ${{secrets.DB_PASS}}
+      DB_PORT: ${{secrets.DB_PORT}}
+      DB_USER: ${{secrets.DB_USER}}
+      DB_NAME: ${{secrets.DB_NAME}}
+      APP_URL: ${{secrets.APP_URL}}
+      RIOT_API_KEY: ${{secrets.RIOT_API_KEY}}
 
     steps:
     - name: Checkout code
@@ -53,4 +61,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f void-app
       - name: Run docker container
-        run: docker run -d -p 3000:3000 -e DB_HOST=${{secrets.DB_HOST}} -e DB_PASS=${{secrets.DB_PASS}} -e DB_PORT=${{secrets.DB_PORT}} -e DB_USER=${{secrets.DB_USER}} -e DB_NAME=${{secrets.DB_NAME}} --name void-app jjairojr/void
+        run: docker run -d -p 3000:3000 -e DB_HOST=${{secrets.DB_HOST}} -e DB_PASS=${{secrets.DB_PASS}} -e DB_PORT=${{secrets.DB_PORT}} -e DB_USER=${{secrets.DB_USER}} -e DB_NAME=${{secrets.DB_NAME}} -e APP_URL${{secrets.APP_URL}} -e RIOT_API_KEY=${{secrets.RIOT_API_KEY}} --name void-app jjairojr/void

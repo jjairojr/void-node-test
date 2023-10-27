@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { LOLRegion } from '../types';
-import { QueueEntity } from '../../queue/queue.entity';
+import { QueueEntity } from '../../queue/entities/queue.entity';
 
 @Entity({ name: 'players' })
 export class PlayerEntity {

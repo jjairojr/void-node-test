@@ -9,7 +9,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { PlayerEntity } from '../player/entities/player.entity';
+import { PlayerEntity } from '../../player/entities/player.entity';
 
 @Entity({ name: 'queues' })
 export class QueueEntity {

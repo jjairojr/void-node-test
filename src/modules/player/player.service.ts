@@ -14,7 +14,7 @@ import { env } from '../../env';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PlayerEntity } from './entities/player.entity';
 import { Repository } from 'typeorm';
-import { QueueEntity } from '../queue/queue.entity';
+import { QueueEntity } from '../queue/entities/queue.entity';
 
 @Injectable()
 export class PlayerService {

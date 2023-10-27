@@ -6,7 +6,7 @@ import {
 } from './dto/get-leaderboard-by-summoner-name.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { QueueEntity } from '../queue/queue.entity';
+import { QueueEntity } from '../queue/entities/queue.entity';
 import { LOLRegion } from '../player/types';
 
 @Injectable()

@@ -38,21 +38,19 @@ jobs:
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
 
     - name: Build docker image
-      run: docker build -t void/backend .
-
-    - name: Tag docker
-      run: docker tag void jjairojr/void/back:void
+      run: docker build -t jjairojr/void .
 
     - name: Publish image to docker hub
-      run: docker push jjairojr/void/backend:latest
+      run: docker push jjairojr/void
 
   deploy:
     needs: build
-    runs-on: [void-aws-ec2]
+    runs-on: self-hosted
     steps:
       - name: Pull image from docker hub
-        run: docker pull docker push void/backend:latest
+        run: docker pull jjairojr/void:latest
+
       - name: Delete old container
         run: docker rm -f void-app
       - name: Run docker container
-        run: docker run -d -p 3000:3000 --name void-app void/backend
+        run: docker run -d -p 3000:3000 --name void-app jjairojr/void

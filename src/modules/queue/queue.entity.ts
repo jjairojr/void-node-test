@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { PlayerEntity } from '../player/entities/player.entity';
 
@@ -15,7 +16,7 @@ export class QueueEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({})
   type: LOLQueueName;
 
   @Column({ name: 'league_points' })
@@ -30,7 +31,14 @@ export class QueueEntity {
   @Column()
   losses: number;
 
+  @Column({ name: 'player_id' })
+  playerId: string;
+
   @ManyToOne(() => PlayerEntity, (player) => player.queues)
+  @JoinColumn({
+    name: 'player_id',
+    referencedColumnName: 'id',
+  })
   player: PlayerEntity;
 
   @CreateDateColumn({ name: 'created_at' })

@@ -64,21 +64,6 @@ export class PlayerService {
     summonerName,
     queueId,
   }: GetPlayerSummaryDTO) {
-    const playerrepo = this.playerRepository.create({
-      summonerName: 'jairas2',
-      region: 'BR1',
-      accountId: '123',
-      queues: [
-        {
-          type: 'RANKED_FLEX_SR',
-          wins: 14,
-          losses: 11,
-          leaguePoints: 11,
-          winRate: 11,
-        },
-      ],
-    });
-
     const riotService = new RiotService();
 
     const { data: player } = await riotService.getPlayer({
@@ -263,15 +248,25 @@ export class PlayerService {
     playerRepository: Repository<PlayerEntity>;
     players: TFormattedPlayer;
   }) {
-    const promises = players.map(async (player) => {
+    players.reduce(async (previousPromise, player) => {
+      await previousPromise;
+
       const playerExists = await playerRepository.findOne({
-        where: { accountId: player.accountId },
+        where: {
+          accountId: player.accountId,
+        },
+        relations: ['queues'],
       });
+
       const winRate = parseFloat(
         (player.wins / (player.wins + player.losses)).toFixed(2),
       );
 
-      if (playerExists) {
+      const playerQueueExists = playerExists?.queues.find(
+        (queue) => queue.type === player.queueType,
+      );
+
+      if (!playerQueueExists && playerExists) {
         await queueRepository.save({
           type: player.queueType,
           leaguePoints: player.leaguePoints,
@@ -280,29 +275,44 @@ export class PlayerService {
           winRate,
           player: playerExists,
         });
-
-        return await playerRepository.update(playerExists.id, {
-          summonerName: player.summonerName,
-          region: player.region,
-          accountId: player.accountId,
-        });
       }
 
-      return await playerRepository.save({
-        summonerName: player.summonerName,
-        region: player.region,
-        accountId: player.accountId,
-        queues: [
+      if (playerExists) {
+        await queueRepository.update(
+          {
+            type: player.queueType,
+          },
           {
             type: player.queueType,
             leaguePoints: player.leaguePoints,
             wins: player.wins,
             losses: player.losses,
             winRate,
+            player: playerExists,
           },
-        ],
-      });
-    });
-    return await Promise.all(promises);
+        );
+
+        await playerRepository.update(playerExists.id, {
+          summonerName: player.summonerName,
+          region: player.region,
+          accountId: player.accountId,
+        });
+      } else {
+        await playerRepository.save({
+          summonerName: player.summonerName,
+          region: player.region,
+          accountId: player.accountId,
+          queues: [
+            {
+              type: player.queueType,
+              leaguePoints: player.leaguePoints,
+              wins: player.wins,
+              losses: player.losses,
+              winRate,
+            },
+          ],
+        });
+      }
+    }, Promise.resolve());
   }
 }

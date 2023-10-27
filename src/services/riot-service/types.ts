@@ -17,9 +17,9 @@ export type GetPlayerRankDTO = {
 
 export type GetPlayerRankResponse = {
   leagueId: string;
-  queueType: LOLQueueName; // todo
-  tier: string; // todo
-  rank: string; // todo
+  queueType: LOLQueueName;
+  tier: string;
+  rank: string;
   summonerId: string;
   summonerName: string;
   leaguePoints: number;
@@ -61,7 +61,7 @@ export type GetMatchDetailsByMatchIdResponse = {
     participants: {
       summonerName: string;
 
-      perks: any;
+      perks: unknown;
       summoner1Id: number;
       summoner2Id: number;
       championName: string;
@@ -76,7 +76,7 @@ export type GetMatchDetailsByMatchIdResponse = {
     }[];
     platformId: string;
     queueId: number;
-    teams: any[][];
+    teams: unknown[][];
     tournamentCode: string;
   };
 };

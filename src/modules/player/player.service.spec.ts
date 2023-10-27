@@ -5,7 +5,7 @@ import { PlayerEntity } from './entities/player.entity';
 import { Repository } from 'typeorm';
 import { LOLQueueId } from '../lol/interfaces';
 import { QueueEntity } from '../queue/entities/queue.entity';
-import { CACHE_MANAGER, CacheModule } from '@nestjs/cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 describe('PlayerService', () => {
   let playerService: PlayerService;

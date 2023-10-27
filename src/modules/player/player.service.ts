@@ -1,4 +1,4 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { RiotService } from '../../services/riot-service';
 import { TFormattedPlayer } from './types';
 import { GetMatchesByPlayerIdResponse } from '../../services/riot-service/types';

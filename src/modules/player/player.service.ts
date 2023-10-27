@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { RiotService } from '../../services/riot-service';
-import { LOLRegion } from './types';
+import { LOLRegion, TFormattedPlayer } from './types';
 import { GetMatchesByPlayerIdResponse } from '../../services/riot-service/types';
 import { GetPlayerSummaryDTO } from './dto/get-player-summary.dto';
 import { GetPlayerRecentMatchesDTO } from './dto/get-player-recent-matches.dto';
@@ -11,9 +11,20 @@ import {
 } from '../../services/riot-service/constants';
 
 import { env } from '../../env';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PlayerEntity } from './entities/player.entity';
+import { Repository } from 'typeorm';
+import { QueueEntity } from '../queue/queue.entity';
 
 @Injectable()
 export class PlayerService {
+  constructor(
+    @InjectRepository(PlayerEntity)
+    private readonly playerRepository: Repository<PlayerEntity>,
+    @InjectRepository(QueueEntity)
+    private readonly queueRepository: Repository<QueueEntity>,
+  ) {}
+
   async getPlayerRecentMatches({
     region,
     summonerName,
@@ -53,6 +64,21 @@ export class PlayerService {
     summonerName,
     queueId,
   }: GetPlayerSummaryDTO) {
+    const playerrepo = this.playerRepository.create({
+      summonerName: 'jairas2',
+      region: 'BR1',
+      accountId: '123',
+      queues: [
+        {
+          type: 'RANKED_FLEX_SR',
+          wins: 14,
+          losses: 11,
+          leaguePoints: 11,
+          winRate: 11,
+        },
+      ],
+    });
+
     const riotService = new RiotService();
 
     const { data: player } = await riotService.getPlayer({
@@ -93,25 +119,38 @@ export class PlayerService {
       );
     }
 
-    return playerFilteredByQueueType.map((player) => {
+    const formattedPlayer = playerFilteredByQueueType.map((playerQueue) => {
       return {
         rank: {
-          name: player.tier,
-          image: env.APP_URL + `/lol/tier/${player.tier.toLowerCase()}/image`,
+          name: playerQueue.tier,
+          image:
+            env.APP_URL + `/lol/tier/${playerQueue.tier.toLowerCase()}/image`,
         },
-        queueType: player.queueType,
-        leaguePoints: player.leaguePoints,
-        wins: player.wins,
-        losses: player.losses,
-        KDA: averagesByQueueId[queueTypeToQueueIdMap[player.queueType]]?.avgKDA,
+        region,
+        accountId: player.accountId,
+        queueType: playerQueue.queueType,
+        summonerName: playerQueue.summonerName,
+        leaguePoints: playerQueue.leaguePoints,
+        wins: playerQueue.wins,
+        losses: playerQueue.losses,
+        KDA: averagesByQueueId[queueTypeToQueueIdMap[playerQueue.queueType]]
+          ?.avgKDA,
         avgVisionScore:
-          averagesByQueueId[queueTypeToQueueIdMap[player.queueType]]
+          averagesByQueueId[queueTypeToQueueIdMap[playerQueue.queueType]]
             ?.avgVisionScore,
         avgCSPerMinute:
-          averagesByQueueId[queueTypeToQueueIdMap[player.queueType]]
+          averagesByQueueId[queueTypeToQueueIdMap[playerQueue.queueType]]
             ?.avgCSPerMinute,
       };
     });
+
+    await this.savePlayer({
+      queueRepository: this.queueRepository,
+      playerRepository: this.playerRepository,
+      players: formattedPlayer,
+    });
+
+    return formattedPlayer;
   }
 
   private async getMatchesPlayerDetails({
@@ -213,5 +252,57 @@ export class PlayerService {
       averagesByQueueId,
       matchesDetails,
     };
+  }
+
+  private async savePlayer({
+    queueRepository,
+    playerRepository,
+    players,
+  }: {
+    queueRepository: Repository<QueueEntity>;
+    playerRepository: Repository<PlayerEntity>;
+    players: TFormattedPlayer;
+  }) {
+    const promises = players.map(async (player) => {
+      const playerExists = await playerRepository.findOne({
+        where: { accountId: player.accountId },
+      });
+      const winRate = parseFloat(
+        (player.wins / (player.wins + player.losses)).toFixed(2),
+      );
+
+      if (playerExists) {
+        await queueRepository.save({
+          type: player.queueType,
+          leaguePoints: player.leaguePoints,
+          wins: player.wins,
+          losses: player.losses,
+          winRate,
+          player: playerExists,
+        });
+
+        return await playerRepository.update(playerExists.id, {
+          summonerName: player.summonerName,
+          region: player.region,
+          accountId: player.accountId,
+        });
+      }
+
+      return await playerRepository.save({
+        summonerName: player.summonerName,
+        region: player.region,
+        accountId: player.accountId,
+        queues: [
+          {
+            type: player.queueType,
+            leaguePoints: player.leaguePoints,
+            wins: player.wins,
+            losses: player.losses,
+            winRate,
+          },
+        ],
+      });
+    });
+    return await Promise.all(promises);
   }
 }

@@ -1,20 +1,34 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PlayerService } from './player.service';
 import { LOLQueueId } from './types';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { PlayerEntity } from './entities/player.entity';
+import { Repository } from 'typeorm';
 
 describe('PlayerService', () => {
   let playerService: PlayerService;
+  let playerRepository: Repository<PlayerEntity>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PlayerService],
+      providers: [
+        PlayerService,
+        {
+          provide: getRepositoryToken(PlayerEntity),
+          useValue: {},
+        },
+      ],
     }).compile();
 
     playerService = module.get<PlayerService>(PlayerService);
+    playerRepository = module.get<Repository<PlayerEntity>>(
+      getRepositoryToken(PlayerEntity),
+    );
   });
 
   it('should be defined', () => {
     expect(playerService).toBeDefined();
+    expect(playerRepository).toBeDefined();
   });
 
   it('should call the Riot service with the correct parameters', async () => {

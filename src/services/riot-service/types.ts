@@ -1,4 +1,4 @@
-import { LOLQueueId, LOLRegion } from 'src/modules/player/types';
+import { LOLQueueId, LOLQueueName, LOLRegion } from 'src/modules/player/types';
 
 export type GetPlayerResponse = {
   id: string;
@@ -17,7 +17,7 @@ export type GetPlayerRankDTO = {
 
 export type GetPlayerRankResponse = {
   leagueId: string;
-  queueType: string; // todo
+  queueType: LOLQueueName; // todo
   tier: string; // todo
   rank: string; // todo
   summonerId: string;
@@ -59,6 +59,8 @@ export type GetMatchDetailsByMatchIdResponse = {
     gameVersion: string;
     mapId: number;
     participants: {
+      summonerName: string;
+
       perks: any;
       summoner1Id: number;
       summoner2Id: number;

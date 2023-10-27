@@ -26,6 +26,11 @@ jobs:
     - name: Run tests
       run: npm test
 
+  build:
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Checkout source
       uses: actions/checkout@v3
 

@@ -24,4 +24,9 @@ export class LolController {
       region,
     });
   }
+
+  @Get('/leaderboard/region/:region')
+  async getLeaderboard(@Param('region') region: LOLRegion) {
+    return this.lolService.getLeaderboard({ region });
+  }
 }

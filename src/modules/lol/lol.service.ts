@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  GetLeaderBoardByRegionDTO,
   GetLeaderBoardBySummonerNameDTO,
   TLeaderboardByQueueType,
 } from './dto/get-leaderboard-by-summoner-name.dto';
@@ -52,7 +53,7 @@ export class LolService {
     return player;
   }
 
-  async getLeaderboard({ region }: GetLeaderBoardBySummonerNameDTO) {
+  async getLeaderboard({ region }: GetLeaderBoardByRegionDTO) {
     const leaderBoardByQueueType: Record<string, TLeaderboardByQueueType> = {};
 
     const queues = await this.queueRepository.find({

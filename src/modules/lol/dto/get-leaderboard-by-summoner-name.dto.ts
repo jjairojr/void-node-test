@@ -5,6 +5,10 @@ export type GetLeaderBoardBySummonerNameDTO = {
   region: LOLRegion;
 };
 
+export type GetLeaderBoardByRegionDTO = {
+  region: LOLRegion;
+};
+
 export type TLeaderboardByQueueType = {
   players: Array<{
     winRate: number;

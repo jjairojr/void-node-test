@@ -67,21 +67,15 @@ export class PlayerService {
   }: GetPlayerSummaryDTO) {
     const riotService = new RiotService();
 
-    console.log('step1');
-
     const { data: player } = await riotService.getPlayer({
       region,
       summonerName,
     });
 
-    console.log('step2', player);
-
     const { data: playersInfo } = await riotService.getPlayerRank({
       id: player.id,
       region,
     });
-
-    console.log('step3', playersInfo);
 
     const { data: matches } = await riotService.getMatchesByPlayerId({
       startIndex: 0,
@@ -91,16 +85,12 @@ export class PlayerService {
       queueId,
     });
 
-    console.log('step4', matches);
-
     const { averagesByQueueId } = await this.getMatchesPlayerDetails({
       summonerPuuid: player.puuid,
       riotService,
       region,
       matches,
     });
-
-    console.log('step5', averagesByQueueId);
 
     const playerFilteredByQueueType = queueId
       ? playersInfo.filter((player) => {

@@ -75,4 +75,13 @@ Before getting started, make sure you have the following tools installed on your
 - **PostgreSQL**: An open-source relational database.
 - **Zod**: A TypeScript data validation library.
 - **Jest**: A JavaScript testing framework.
-- **dotenv**: A module for managing environment variables.
+- **dotenv**: A module for managing environment variables.}
+
+
+### Video
+Video application running on AWS EC2
+
+https://github.com/jjairojr/void-node-test/assets/44951083/5d562b78-0972-40c0-b318-42bb5ad64e13
+
+
+

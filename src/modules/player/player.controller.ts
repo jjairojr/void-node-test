@@ -1,13 +1,11 @@
-import { Controller, Get, Param, Query, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { LOLQueueId, LOLRegion } from '../lol/interfaces';
-import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('player')
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
-  @UseInterceptors(CacheInterceptor)
   @Get(':summonerName/region/:region')
   getPlayerSummary(
     @Param('region') region: LOLRegion,
@@ -21,7 +19,6 @@ export class PlayerController {
     });
   }
 
-  @UseInterceptors(CacheInterceptor)
   @Get(':summonerName/region/:region/matches')
   getPlayerRecentMatches(
     @Param('region') region: LOLRegion,

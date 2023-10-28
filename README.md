@@ -28,6 +28,9 @@ The deploy use github actions in a ci.yml pipeline, the pipeline runs, lint, tes
 and build a docker image and deploy the imagine through GH Runners to EC2 Aws machine,
 EC2 listen through the GH Runner and pull the docker image and run the container.
 
+## Postman Collection
+
+I provide a [POSTMAN COLLECTION](https://drive.google.com/drive/u/1/folders/1DuBO87iL5HMdhapfZUJuKWWrVMaXlJ9_) to test the api, locally and on AWS ec2.
   
 
 ## Tests

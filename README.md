@@ -1,6 +1,7 @@
 ## Void Node Challenge
 Developed by [jjairojr](https://github.com/jjairojr)
-  
+  ![void-logo](https://github.com/jjairojr/void-node-test/assets/44951083/6d0bf6d0-b7fa-47f8-86d6-e3e0d011b8f0)
+
 
 This project was developed as part of the Void.gg Test Node Challenge. It aims to create a API SERVICE to get details about summoners and leaderboards.
 
@@ -20,6 +21,12 @@ Link to the complete challenge instructions: [Node Challenge Instructions](https
 -  [x] GET Leaderboard by Region
 
 -  [x] GET Lol Rank images
+
+
+## Deploy
+The deploy use github actions in a ci.yml pipeline, the pipeline runs, lint, tests 
+and build a docker image and deploy the imagine through GH Runners to EC2 Aws machine,
+EC2 listen through the GH Runner and pull the docker image and run the container.
 
   
 

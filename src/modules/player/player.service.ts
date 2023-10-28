@@ -281,6 +281,9 @@ export class PlayerService {
       if (playerExists) {
         await queueRepository.update(
           {
+            player: {
+              id: playerExists.id,
+            },
             type: player.queueType,
           },
           {
